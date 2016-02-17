@@ -1,0 +1,214 @@
+#include "camionette.h"
+#include "camion.h"
+#include "vehicule.h"
+#include "voiture.h"
+#include "parc.h"
+#include <string>
+#include <iostream>
+#include <windows.h>
+
+using namespace std;
+
+parc::parc()
+{
+    nbPlaces = 10;
+    parcVehicule = new vehicule*[nbPlaces];
+    int i;
+    for(i = 0; i < nbPlaces; i++)
+    {
+        parcVehicule[i] = NULL;
+    }
+}
+
+parc::parc(int uneTaille)
+{
+    nbPlaces = uneTaille;
+    parcVehicule = new vehicule*[nbPlaces];
+    int i;
+    for(i = 0; i < nbPlaces; i++)
+    {
+        parcVehicule[i] = NULL;
+    }
+}
+
+parc::~parc()
+{
+
+}
+
+void parc::affichage()
+{
+    int i;
+    bool aff;
+    aff=false;
+    for(i = 0; i < nbPlaces; i++)
+    {
+        if(parcVehicule[i] != NULL)
+        {
+            aff=true;
+            system("cls");
+            cout<<"Il y a "<<get_UnNbPlaces()<<" places dans le parc."<<endl;
+            cout<<"Liste des places prises dans le parc : \n"<<endl;
+            cout<<"Place numero : "<<(i+1)<<"\n"<<endl;
+            cout<<"TYPE : "<<parcVehicule[i]->get_Type()<<endl;
+            parcVehicule[i] -> affichage();
+            cout<<"\nIl reste "<<get_PlacesDisponibles()<<" places disponibles dans le parc."<<endl;
+            system("pause");
+            system("cls");
+        }
+    }
+    if (aff==false)
+        cout<<"Il n'y a aucun vehicule dans le parc."<<endl;
+}
+
+void parc::casser(int num)
+{
+    int i = 0;
+    bool search = true;
+    if (parcVehicule[num-1]!=NULL)
+    {
+        parcVehicule[num-1] = NULL;
+        search = false;
+    }
+    if(search)
+    {
+        cout<<"Le vehicule n'existe pas dans le parc."<<endl;
+        system("pause");
+    }
+    system("cls");
+}
+
+
+void parc::ajouter(vehicule* UnVehicule)
+{
+    int i = 0;
+    bool search = true;
+    while (i < nbPlaces && search)
+    {
+        if (parcVehicule[i] == NULL)
+        {
+            parcVehicule[i] = UnVehicule;
+            search = false;
+        }
+        i++;
+    }
+    if(search)
+    {
+        cout<<"Le vehicule n'existe pas dans le parc."<<endl;
+        system("pause");
+    }
+    system("cls");
+}
+
+void parc::louer(int num)
+{
+    voiture* v = new voiture;
+    camionette* nette = new camionette;
+
+    int i = 0;
+    bool search = true;
+    if (parcVehicule[num-1]!=NULL)
+        search = false;
+    if(search)
+    {
+        cout<<"Le vehicule n'existe pas dans le parc."<<endl;
+        system("pause");
+    }
+    else if (strcmp((*parcVehicule[num-1]).get_Type(),"voiture")==0 || strcmp((*parcVehicule[num-1]).get_Type(),"camionette")==0)
+    {
+        if(strcmp((*parcVehicule[num-1]).get_Type(),"voiture")==0)
+        {
+            voiture* v = dynamic_cast<voiture*>(parcVehicule[num-1]);
+            if(v -> get_Location())
+            {
+                cout<<"La voiture est deja louee !"<<endl;
+                system("pause");
+            }
+            else v -> set_Location(true);
+        }
+        else if(strcmp((*parcVehicule[num-1]).get_Type(),"camionette")==0)
+        {
+            camionette* nette = dynamic_cast<camionette*>(parcVehicule[num-1]);
+            if(nette -> get_Location())
+            {
+                cout<<"La camionnette est deja louee !"<<endl;
+                system("pause");
+            }
+            else nette -> set_Location(true);
+        }
+    }
+    else
+    {
+        cout<<"Le vehicule n'est pas une voiture ou une camionnette."<<endl;
+        system("pause");
+    }
+    system("cls");
+}
+
+void parc::rendre(int num)
+{
+    voiture* v = new voiture;
+    camionette* nette = new camionette;
+
+    int i = 0;
+    bool search = true;
+    if (parcVehicule[num-1]!=NULL)
+        search = false;
+    if(search)
+    {
+        cout<<"Il faut garer la voiture avant de la rendre !"<<endl;
+        system("pause");
+    }
+    else if (strcmp((*parcVehicule[num-1]).get_Type(),"voiture")==0 || strcmp((*parcVehicule[num-1]).get_Type(),"camionette")==0)
+    {
+        if(strcmp((*parcVehicule[num-1]).get_Type(),"voiture")==0)
+        {
+            voiture* v = dynamic_cast<voiture*>(parcVehicule[num-1]);
+            if(!v -> get_Location())
+            {
+                cout<<"La voiture est déjà libre !"<<endl;
+                system("pause");
+            }
+            else v -> set_Location(false);
+        }
+        else if(strcmp((*parcVehicule[num-1]).get_Type(),"camionette")==0)
+        {
+            camionette* nette = dynamic_cast<camionette*>(parcVehicule[num-1]);
+            if(!nette -> get_Location())
+            {
+                cout<<"La camionnette est deja libre !"<<endl;
+                system("pause");
+            }
+            else nette -> set_Location(false);
+        }
+    }
+    else
+    {
+        cout<<"Le vehicule n'est pas une voiture ou une camionnette."<<endl;
+        system("pause");
+    }
+    system("cls");
+}
+
+int parc::get_PlacesDisponibles()
+{
+    int i, cpt;
+    cpt=0;
+    for(i = 0; i < nbPlaces; i++)
+    {
+        if(parcVehicule[i] != NULL)
+            cpt++;
+    }
+    return nbPlaces - cpt;
+}
+
+
+int parc::get_UnNbPlaces()
+{
+    return nbPlaces;
+}
+
+
+
+
+

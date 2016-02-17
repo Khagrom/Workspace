@@ -1,0 +1,197 @@
+/* manipulationBits.c
+ * Auteurs : POIRIER Vincent / ROTTEE Fanny */
+#include <stdio.h>
+#include <ctype.h>
+#define TAILLEINT (8*sizeof(int))
+
+/* Liste des fonctions et procédures utilisées */
+void aff_bits(unsigned n);
+int inverse(unsigned x, unsigned p, unsigned n);
+int rot_droite(unsigned n, unsigned b);
+char tryAgain();
+void pause();
+void viderBuffer();
+
+/* Quand on emploie 'unsigned' ici, on se sert de 'unsigned int' */
+int main()
+{
+    /* n : entier sur lequel on travaille                    */
+    /* pos : position du bit à partir du quel on complémente */
+    /* nb : nombre de bits à compléter                       */
+    /* rot : nombre de bits à décaler vers la droite         */
+    unsigned n, pos, nb, rot;
+
+    /* i : variable de boucle                     */
+    /* ok : validation de saisie sur n            */
+    /* choix : numéro du choix voulu pour le menu */
+    int i, ok, choix;
+
+    printf("\n\t\t\tI N I T I A L I S A T I O N\n");
+    printf("\t\t\t---------------------------\n\n");
+
+    /* On demande à l'utilisateur de rentrer l'entier n */
+    do
+    {
+        printf("Donnez un entier quelconque : ");
+        ok = scanf("%d", &n);
+        viderBuffer();
+    }
+    while (!ok);
+
+    do
+    {
+        /* Menu */
+        printf("\n\t\tM A N I P U L A T I O N    D E    B I T S\n");
+        printf("\t\t-----------------------------------------\n\n");
+        printf("\tOperations binaires sur l'entier\n\n");
+        printf("1...Rentrer un nouvel entier\n");
+        printf("2...Representation binaire de \"%d\"\n", n);
+        printf("3...Inversion de certains bits de \"%d\"\n", n);
+        printf("4...Decalage a droite de certains bits de \"%d\"\n");
+        printf("5...Sortie\n\n");
+
+        /* On demande à l'utilisateur de choisir ce qu'il veut faire */
+        do
+        {
+            printf("Quel est votre choix ? ");
+            ok = scanf("%d", &choix);
+            viderBuffer();
+        }
+        while (!ok || choix > 5 || choix < 1);
+        printf("\n");
+
+        /* Gestion du choix */
+        switch (choix)
+        {
+        case 1:
+            /* On demande à l'utilisateur de choisir ce qu'il veut faire */
+            do
+            {
+                printf("Donnez un entier quelconque : ");
+                ok = scanf("%d", &n);
+                viderBuffer();
+            }
+            while (!ok);
+            pause();
+            break;
+        case 2:
+            /* Affichage en binaire de l'entier concerné */
+            printf("Voici la representation en binaire du nombre \"%d\" :\n", n);
+            aff_bits(n);
+            pause();
+            break;
+        case 3:
+            /* Rappel de la forme de la représentation binaire de l'entier n */
+            printf("Sur l'entier \"%d\" de representation binaire\n", n);
+            aff_bits(n);
+
+            /* On veut complémenter n bits de l'entier à partir du bit p */
+            printf("\non va inverser n bits de ce nombre a compter du p eme\n");
+            do
+            {
+                printf("Donnez p ( > 0 et <= %d ) : ", TAILLEINT);
+                ok = scanf("%d", &pos);
+                viderBuffer();
+            }
+            while (!ok || pos <= 0 || pos > TAILLEINT);
+            do
+            {
+                printf("Donnez n ( > 0 et <= %d ) : ", pos);
+                ok = scanf("%d", &nb);
+                viderBuffer();
+            }
+            while (!ok || nb <= 0 || nb > pos);
+            aff_bits(inverse(n, pos, nb));
+            /* On souligne les bits qui ont été modifiés */
+            for(i = 0; i < 2*(TAILLEINT - pos); i++)
+                printf(" ");
+            for(i = 1; i < 2*nb; i++)
+                printf("-");
+            pause();
+            break;
+        case 4:
+            /* Rappel de la forme de la représentation binaire de l'entier n */
+            printf("Sur l'entier \"%d\" de representation binaire\n", n);
+            aff_bits(n);
+
+            /* On veut décaler à droite b bits de l'entier */
+            printf("\non va effectuer une permutation circulaire vers la DROITE de b bits.\n");
+            do
+            {
+                printf("Donnez b ( > 0 ) : ");
+                ok = scanf("%d", &rot);
+                viderBuffer();
+            }
+            while (!ok || rot <= 0);
+            aff_bits(rot_droite(n, rot));
+            pause();
+            break;
+        case 5:
+            /* Sortie du programme */
+            return 0;
+        }
+    }
+    while (choix != 6);
+
+    /* Sortie de secours */
+    return 0;
+}
+
+/* aff_bits qui affiche sur la console la représentation binaire d'un entier. */
+/* n : l'entier concerné                                                      */
+void aff_bits(unsigned n)
+{
+    int i;
+
+    for(i = TAILLEINT - 1; i >= 0; i--)
+        if (n & (1 << i))
+            printf("1 ");
+        else
+            printf("0 ");
+
+    printf("\n");
+}
+
+/* inverse qui complémente un certain nombre de bits d'un entier */
+/* x : l'entier concerné                                         */
+/* p : le numéro du bit à partir duquel il faut complémenter     */
+/* n : le nombre de bits à complémenter                          */
+int inverse(unsigned x, unsigned p, unsigned n)
+{
+    if(n == TAILLEINT)
+        return ~x;
+    else
+        return x ^ (~(-1 << n) << (p - n));
+}
+
+/* rot_droite qui décale à droite un certain nombre de bits d'un entier */
+/* n : l'entier concerné                                                */
+/* b : le nombre de bits à décaler                                      */
+int rot_droite(unsigned n, unsigned b)
+{
+    unsigned shiftLeft, shiftRight;
+    b = (unsigned)((int)b % TAILLEINT);
+
+    if(b > 0)
+    {
+        shiftRight = n >> b;
+        shiftLeft = n << (TAILLEINT - b);
+        return (shiftRight | shiftLeft);
+    }
+    else
+        return n;
+}
+
+/* pause qui permet à l'utilisateur de bien lire */
+/* l'opération précédente avant de continuer     */
+void pause()
+{
+    printf("\nAppuyez sur Entree pour continuer...\n");
+    viderBuffer();
+}
+
+/* viderBuffer qui vide le buffer */
+void viderBuffer()
+{
+    while (getchar() != '\n') ;
+}

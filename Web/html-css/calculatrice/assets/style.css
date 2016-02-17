@@ -1,0 +1,22 @@
+td {
+    border: 1px solid black;
+    text-align: center;
+    width: 50px;
+}
+
+th {
+    border: 0.05em darkgray solid;
+    text-align: right;
+    font-weight: normal;
+    background-color: lightskyblue;
+}
+
+table {
+    border: 1px solid gray;
+    background-color: lightgrey;
+    border-radius: 0.2em;
+    padding: 10px 4px;
+    font-family: "Lucida Sans Unicode", sans-serif;
+    font-size: 25px;
+    border-spacing: 4px;
+}

@@ -1,0 +1,43 @@
+#include "camionette.h"
+#include <string>
+#include <iostream>
+#include <windows.h>
+
+using namespace std;
+
+camionette::camionette():vehicule()
+{
+    hauteur = 2;
+    longueur = 4;
+    tonnage = 5;
+}
+
+camionette::camionette(int UneHauteur, int UneLongueur, int UnTonnage, char UnMatricule[], int UneAnnee, int UnKm, int UnePuissance):vehicule(UnMatricule, UneAnnee, UnKm, UnePuissance)
+{
+    hauteur = UneHauteur;
+    longueur = UneLongueur;
+    tonnage = UnTonnage;
+}
+
+camionette::~camionette()
+{
+
+}
+
+void camionette::affichage()
+{
+    system("cls");
+    vehicule::affichage();
+    cout<<"VOLUME:"<<volume<<endl;
+    system("pause");
+}
+
+int camionette::get_UnVolume()
+{
+    return volume;
+}
+
+void camionette::set_UnVolume(int UnVolume)
+{
+    volume = UnVolume;
+}

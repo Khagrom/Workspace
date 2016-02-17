@@ -1,0 +1,11 @@
+section:not(:target) {
+    display: none;
+}
+
+#chap1 {
+    display: block;
+}
+
+section:target ~ #chap1 {
+    display: none;
+}
