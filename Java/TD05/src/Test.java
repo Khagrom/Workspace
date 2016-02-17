@@ -42,7 +42,7 @@ class F extends C {
     }
 }
 
-public class Ex4 {
+public class Test {
 
     public static void main(String arg[]) {
         byte bb = 1;

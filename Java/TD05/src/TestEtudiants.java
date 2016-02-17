@@ -3,7 +3,7 @@
  * @author Vincent Poirier
  * @author Fanny Rottee
  */
-public class PersonneTest {
+public class TestEtudiants {
 
     public static void main(String[] args) {
         Personne p = new Personne("Ladevie", "Léo");

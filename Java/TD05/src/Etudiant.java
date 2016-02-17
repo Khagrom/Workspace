@@ -20,4 +20,13 @@ public class Etudiant extends Personne {
     public long getNoEtu() {
         return noEtu;
     }
+
+    @Override
+    public void affiche() {
+        System.out.println(this.getClass().getSimpleName()
+                + " {\n\tnom: " + this.getNom()
+                + ",\n\tprenom: " + this.getPrenom()
+                + ",\n\tnoEtu: " + this.getNoEtu()
+                + "\n}\n");
+    }
 }

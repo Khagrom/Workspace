@@ -35,7 +35,10 @@ public class Personne {
     }
 
     public void affiche() {
-        System.out.println(this);
+        System.out.println(this.getClass().getSimpleName()
+                + " {\n\tnom: " + this.getNom()
+                + ",\n\tprenom: " + this.getPrenom()
+                + "\n}\n");
     }
 
 }
