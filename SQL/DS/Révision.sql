@@ -1,4 +1,6 @@
--- Révision DS Final POIRIER
+-- Révision DS Final
+-- Auteur :
+-- POIRIER Vincent
 -- Préparation
 clear screen;
 
