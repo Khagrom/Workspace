@@ -8,6 +8,8 @@ set serveroutput on;
 
 -- Exercice 1
 clear screen;
+drop table emp;
+create table emp as select * from scott.emp;
 declare
   cursor c_emp is
     select * from emp;
