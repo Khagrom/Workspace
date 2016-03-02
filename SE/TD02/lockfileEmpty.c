@@ -10,7 +10,7 @@
 #include<sys/types.h>
 
 #define BUFF_SIZE 30
-#define VARIANT_LOCK 2 // 0 : pas de verrouillage, 1 : verrouillage bloquant, 2 : tentative de verrouillage (non bloquant)
+#define VARIANT_LOCK 1 // 0 : pas de verrouillage, 1 : verrouillage bloquant, 2 : tentative de verrouillage (non bloquant)
 
 typedef struct contact
 {
@@ -44,19 +44,18 @@ int main(int argn, char** argv)
 
     do
     {
-        printf("\n0-Quitter\n1-Affichage de l'ensemble des personnes\n2-Affichage d'une personne\n"
-               "3-Ajout d'une personne\n4-Modification d'une personne\n");
-        printf("Choix: ");
-        scanf("%d",&choix);
+        printf("\n0) Quitter\n1) Affichage de l'ensemble des personnes\n2) Affichage d'une personne\n"
+               "3) Ajout d'une personne\n4) Modification d'une personne\n");
+        printf("Choix : ");
+        scanf("%d", &choix);
 
         printf("\n");
 
         switch(choix)
         {
         case 0:
-            printf("fin du programme\n");
+            printf("Fin du programme\n");
             break;
-
         case 1:
             affichage(argv[1]);
             break;
@@ -71,10 +70,10 @@ int main(int argn, char** argv)
             break;
 
         default:
-            fprintf(stderr,"choix incorrect\n");
+            fprintf(stderr,"Choix incorrect !\n");
         }
     }
-    while(choix!=0);
+    while(choix != 0);
 
     return 0;
 } // fin du main
@@ -105,13 +104,13 @@ void scanContact(contact* personne)
 {
     do
     {
-        printf("identifiant : ");
+        printf("Identifiant : ");
         scanf("%d",&personne->id);
     }
     while(personne->id<1);
-    printf("nom de famille (%d caracteres au maximum) : ", BUFF_SIZE);
+    printf("Nom de famille (%d caracteres au maximum) : ", BUFF_SIZE);
     scanf("%s",personne->name);
-    printf("prenom (%d caracteres au maximum) : ", BUFF_SIZE);
+    printf("Prenom (%d caracteres au maximum) : ", BUFF_SIZE);
     scanf("%s",personne->firstName);
 }
 
@@ -124,9 +123,9 @@ void affichage(char* filename)
     while (personne.id != -1)
     {
         printf("Personne n° %d\n", i);
-        printf("\tidentifiant : %d\n", personne.id);
-        printf("\tnom de famille : %s\n", personne.name);
-        printf("\tprenom : %s\n", personne.firstName);
+        printf("\tIdentifiant : %d\n", personne.id);
+        printf("\tNom de famille : %s\n", personne.name);
+        printf("\tPrenom : %s\n", personne.firstName);
         personne = litUneEntree(fd);
         i++;
     }
@@ -158,9 +157,9 @@ void affichageEntree(char* filename)
     if (personne.id != -1)
     {
         printf("Personne n° %d\n", no);
-        printf("\tidentifiant : %d\n", personne.id);
-        printf("\tnom de famille : %s\n", personne.name);
-        printf("\tprenom : %s\n", personne.firstName);
+        printf("\tIdentifiant : %d\n", personne.id);
+        printf("\tNom de famille : %s\n", personne.name);
+        printf("\tPrenom : %s\n", personne.firstName);
     }
     else
     {
@@ -178,16 +177,16 @@ void ajout(char* filename)
     int fd = open(filename, O_CREAT | O_RDWR | O_APPEND, 00644);
     if (fd > 0)
     {
-        verrouillage(fd, sizeof(contact), VARIANT_LOCK);
-        scanContact(&personne);
+        if(verrouillage(fd, sizeof(contact), VARIANT_LOCK) != 1) {
+			scanContact(&personne);
 
-        nb_car_ecrit = write(fd, &personne, sizeof(contact));
+			nb_car_ecrit = write(fd, &personne, sizeof(contact));
 
-        if (nb_car_ecrit != sizeof(contact))
-            perror("Erreur lors de l'ajout d'une personne.");
-
-        deverrouillage(fd, sizeof(contact));
-
+			if (nb_car_ecrit != sizeof(contact))
+				perror("Erreur lors de l'ajout d'une personne.");
+		}
+		
+		deverrouillage(fd, sizeof(contact));
         close(fd);
     }
 }
@@ -210,10 +209,11 @@ void modificationEntree(char* filename)
 
     if (personne.id != -1)
     {
-        verrouillage(fd, sizeof(contact), VARIANT_LOCK);
-        scanContact(&personne);
-        write(fd, &personne, sizeof(contact));
-        deverrouillage(fd, sizeof(contact));
+        if(verrouillage(fd, sizeof(contact), VARIANT_LOCK) != 1) {
+			scanContact(&personne);
+			write(fd, &personne, sizeof(contact));
+		}
+		deverrouillage(fd, sizeof(contact));
     }
     else
     {
@@ -229,13 +229,20 @@ void modificationEntree(char* filename)
 int verrouillage(int fd, int offset, int variante) {
     switch (variante) {
         case 1:
-            lockf(fd, F_LOCK, offset);
+            if (lockf(fd, F_TEST, offset) == 0)
+                lockf(fd, F_TLOCK, offset);
+            else {
+               printf("\nFichier utilise par un autre processus !\n");
+               printf("Retour au menu principal.\n");
+			   return(1);
+            }
             break;
         case 2:
             if (lockf(fd, F_TEST, offset) == 0)
                 lockf(fd, F_TLOCK, offset);
             else {
-               printf("Fichier deja utilise.\n");
+               printf("\nFichier utilise par un autre processus !\n");
+               printf("Retour a vos modifications.\n");
             }
             break;
     }
