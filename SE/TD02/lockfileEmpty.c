@@ -27,7 +27,6 @@ void affichageEntree(char* fileName);
 void modificationEntree(char* fileName);
 int verrouillage(int fd, int offset, int variant);
 void deverrouillage(int fd, int offset);
-void affichePersonne(contact);
 
 // procedure qui affiche l'usage de la commande sur la sortie standard pour les erreurs et qui quitte le programme avec un statut non nul
 void usage(char* chaine)
@@ -125,7 +124,9 @@ void affichage(char* filename)
     while (personne.id != -1)
     {
         printf("Personne n° %d\n", i);
-        affichePersonne(personne);
+        printf("\tidentifiant : %d\n", personne.id);
+        printf("\tnom de famille : %s\n", personne.name);
+        printf("\tprenom : %s\n", personne.firstName);
         personne = litUneEntree(fd);
         i++;
     }
@@ -157,7 +158,9 @@ void affichageEntree(char* filename)
     if (personne.id != -1)
     {
         printf("Personne n° %d\n", no);
-        affichePersonne(personne);
+        printf("\tidentifiant : %d\n", personne.id);
+        printf("\tnom de famille : %s\n", personne.name);
+        printf("\tprenom : %s\n", personne.firstName);
     }
     else
     {
@@ -232,7 +235,7 @@ int verrouillage(int fd, int offset, int variante) {
             if (lockf(fd, F_TEST, offset) == 0)
                 lockf(fd, F_TLOCK, offset);
             else {
-               printf("Fichier deja utilise.");
+               printf("Fichier deja utilise.\n");
             }
             break;
     }
@@ -242,11 +245,4 @@ int verrouillage(int fd, int offset, int variante) {
 // deverouille -> Attention a l'offset: un offset invalide peut creer des petits bouts de fichier verrouille.
 void deverrouillage(int fd, int offset) {
     lockf(fd, F_ULOCK, -offset);
-}
-
-void affichePersonne(contact personne)
-{
-    printf("\tidentifiant : %d\n", personne.id);
-    printf("\tnom de famille : %s\n", personne.name);
-    printf("\tprenom : %s\n", personne.firstName);
 }

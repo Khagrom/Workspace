@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head>
+
+	<title>TP2</title>
+	<meta http-equiv="CONTENT-TYPE" content="text/html; charset=UTF-8">
+	<title></title>
+	<meta name="GENERATOR" content="LibreOffice 3.5  (Linux)">
+	<meta name="AUTHOR" content="anthony Busson">
+	<meta name="CREATED" content="20131206;14381200">
+	<meta name="CHANGEDBY" content="anthony Busson">
+	<meta name="CHANGED" content="20131206;14541700">
+	<style type="text/css">
+	<!--
+		H2.cjk { font-family: "WenQuanYi Micro Hei" }
+		H2.ctl { font-family: "Lohit Hindi" }
+	-->
+	</style>
+</head>
+<body dir="LTR" lang="fr-FR">
+<h2 class="western">Exercice&nbsp;:</h2>
+<p>Il s'agit de compléter le fichier lockfile.c, de manière à
+gérer des données non ascii dans un fichier, à se déplacer dans
+un fichier, et à verrouiller un fichier. 
+</p>
+<p>Téléchargez le fichier <a href="http://www.anthonybusson.fr/IUT/systeme/tp2/lockfileEmpty.c">lockfileEmpty.c</a>.</p>
+<ol>
+	<li><p>Modifiez les fonctions litUneEntree(), affichage(),
+	affichageEntree().</p>
+	</li><li><p>Modifiez les fonctions  ajout() et modificationEntree().</p>
+	</li><li><p>Modifiez les fonctions verrouillage et deverrouillage(). Vous
+	devrez utiliser la fonction de la libc lockf(). Celles ci doivent
+	être utilisées dans les fonctions ajout() et modificationEntree()
+	de manière à garantir qu'il ne pourra pas y avoir d'accès
+	concurrent en écriture sur les parties du fichier concernées. Vous
+	testerez un verrouillage bloquant et un verrouillage non bloquant.
+	Pour ce dernier, si un verrou est en cours, le programme devra
+	affiché un message d'erreur et revenir au menu principal.</p>
+</li></ol>
+<p><u>Question (vous devez répondre dans lockfileEmpty.c)&nbsp;:</u></p>
+<p>    Le verrouillage fonctionne-t-il pour des accès en lecture&nbsp;?
+</p>
+<p>    Quelle est la différence entre les opérations F_TLOCK et
+F_TEST&nbsp;? 
+</p>
+<p><br><br>
+</p>
+<p><br><br>
+</p>
+<p><br><br>
+</p>
+<p><br><br>
+</p>
+
+
+</body></html>
