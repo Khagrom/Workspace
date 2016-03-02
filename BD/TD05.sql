@@ -51,6 +51,21 @@ begin
 end;
 /
 
+-- Autre solution
+clear screen;
+drop table employees;
+create table employees as select * from hr.employees;
+alter table employees add etoiles varchar(50);
+declare
+  cursor c_employees is
+    select salary from employees for update of etoiles;
+begin
+  for v_employees in c_employees loop
+    update employees set employees.etoiles = LPAD('*', round(employees.salary/1000),'*') where current of c_employees;
+  end loop;
+end;
+/
+
 -- Exercice 3
 clear screen;
 drop table departments;
