@@ -1,11 +1,80 @@
-section:not(:target) {
-    display: none;
+aside {
+    background-color: lightgreen;
+    width: 33%;
+    margin: 0 1.5%;
+    display: inline-block;
+    vertical-align: middle;
 }
 
-#chap1 {
-    display: block;
+article {
+    text-align: justify;
+    width: 60%;
+    margin: 0 1.5%;
+    display: inline-block;
+    vertical-align: middle;
 }
 
-section:target ~ #chap1 {
-    display: none;
+header li {
+    display: inline;
+    border: 2px solid black;
+    border-bottom: none;
+    border-top-left-radius: 0.5em;
+    border-top-right-radius: 0.5em;
+    padding: 5px 1px;
+}
+
+header ul {
+    position: absolute;
+    bottom: 0;
+    right: 50px;
+    margin-bottom: 3px;
+}
+
+header {
+    height: 160px;
+    position: relative;
+    border: 2px solid black;
+    border-radius: 0.5em;
+    background:
+        url("IUTLyon1.png") no-repeat top right;
+    margin-top: 4px;
+}
+
+header a {
+    color: black;
+}
+
+body {
+    background: url("fondBeige.jpg");
+    min-width: 600px;
+    max-width: 1000px;
+    margin: 0 auto;
+    width: 99%;
+}
+
+header img {
+    float: left;
+}
+
+section#corps {
+    border-top: 3px solid green;
+    border-bottom: 3px solid green;
+    margin: 5px;
+}
+
+footer li {
+    display: table-cell;
+    border: 1px black solid;
+    padding: 0 10px;
+}
+
+footer ul {
+    display: table;
+    margin: 0 auto;
+    border-collapse: collapse;
+    border-style: hidden;
+}
+
+h2 {
+    font-size: 120%;
 }
