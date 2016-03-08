@@ -1,4 +1,7 @@
 
+import java.util.Objects;
+
+
 /**
  * @author Vincent Poirier
  * @author Fanny Rottee
@@ -102,7 +105,7 @@ public class Etudiant {
     public String toString() {
         return "Etudiant[Numero : " + this.noEtu + " ; Nom : " + this.nom + " ; Prenom : " + this.prenom + "]";
     }
-
+    
     /**
      * Vérifie l'égalité par rapport à un autre objet
      *
@@ -127,6 +130,5 @@ public class Etudiant {
             return false;
         }
         return prenom.equals(etudiant.prenom);
-
     }
 }

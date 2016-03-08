@@ -6,6 +6,7 @@
 public class TestPoints {
 
     public static void main(String[] args) {
+        
         Point2DAffichable a = new Point2DAffichable();
         a.setPosition(2, 3);
         

@@ -1,5 +1,5 @@
 
-import parent.*;
+import voyage.*;
 
 /**
  * @author Vincent Poirier
@@ -7,18 +7,17 @@ import parent.*;
  */
 public class VoyageReduit extends Voyage {
 
-    private final static double TAUX_MIN = 0.01;
-    private final static double TAUX_MAX = 0.99;
+    private static final double MIN_RATE = 0.01;
+    private static final double MAX_RATE = 0.99;
     private ReelContraint tauxPromotion;
 
-    public VoyageReduit(String villeDep, String villeArr, int longueur, double prixKm, double tauxPromotion) throws IllegalArgumentException {
+    public VoyageReduit(String villeDep, String villeArr, int longueur, double prixKm, double txProm) throws IllegalArgumentException {
         super(villeDep, villeArr, longueur, prixKm);
-        this.tauxPromotion = new ReelContraint(TAUX_MIN, TAUX_MAX, tauxPromotion);
+        tauxPromotion = new ReelContraint(MIN_RATE, MAX_RATE, txProm);
     }
 
     @Override
     public double getPrix() {
         return super.getPrix() * (1 - this.tauxPromotion.getVal());
     }
-
 }
