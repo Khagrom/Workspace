@@ -3,6 +3,10 @@ import org.junit.*;
 
 import static org.junit.Assert.*;
 
+/**
+ * @author Vincent Poirier
+ * @author Fanny Rottee
+ */
 public class Point2DTest {
 
     private final Point2D p1 = new Point2D(2, 3);

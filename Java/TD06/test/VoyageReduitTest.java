@@ -4,6 +4,10 @@ import org.junit.*;
 
 import static org.junit.Assert.*;
 
+/**
+ * @author Vincent Poirier
+ * @author Fanny Rottee
+ */
 public class VoyageReduitTest {
 
     private static Voyage[] tab;
