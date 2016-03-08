@@ -48,6 +48,27 @@ public class ReelContraint {
         }
         this.val = num;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final ReelContraint other = (ReelContraint) obj;
+        if (this.min != other.min) {
+            return false;
+        }
+        if (this.max != other.max) {
+            return false;
+        }
+        
+        return this.val == other.val;
+    }
+    
+    
 
     public double getMin() {
         return min;

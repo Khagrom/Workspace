@@ -1,5 +1,7 @@
 package voyage;
 
+import java.util.Objects;
+
 
 /**
  * @author Vincent Poirier
@@ -104,6 +106,28 @@ public class Voyage {
         }
 
         return true;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }        
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final Voyage other = (Voyage) obj;
+        if (this.villeDep.equals(other.villeDep)) {
+            return false;
+        }
+        if (this.villeArr.equals(other.villeArr)) {
+            return false;
+        }
+        if (this.longueur.equals(other.longueur)) {
+            return false;
+        }
+        
+        return this.prixKm.equals(other.prixKm);
     }
 
     public String getVilleDep() {

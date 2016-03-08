@@ -1,4 +1,5 @@
 
+import java.util.Objects;
 import voyage.*;
 
 /**
@@ -16,6 +17,19 @@ public class VoyageReduit extends Voyage {
         tauxPromotion = new ReelContraint(MIN_RATE, MAX_RATE, txProm);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final VoyageReduit other = (VoyageReduit) obj;
+        
+        return this.tauxPromotion.equals(other.tauxPromotion);
+    }
+    
     @Override
     public double getPrix() {
         return super.getPrix() * (1 - this.tauxPromotion.getVal());

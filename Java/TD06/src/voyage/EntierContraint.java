@@ -1,6 +1,5 @@
 package voyage;
 
-
 /**
  * @author Vincent Poirier
  * @author Fanny Rottee
@@ -47,6 +46,25 @@ public class EntierContraint {
             throw new IllegalArgumentException("Nombre non valide : hors de l'intervalle [" + this.min + ", " + this.max + "]");
         }
         this.val = num;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        final EntierContraint other = (EntierContraint) obj;
+        if (this.min != other.min) {
+            return false;
+        }
+        if (this.max != other.max) {
+            return false;
+        }
+
+        return this.val == other.val;
     }
 
     public int getMin() {
