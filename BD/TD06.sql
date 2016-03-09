@@ -47,7 +47,6 @@ end;
 /
 
 exec modif_job('PR', 'Professionnel');
-exec modif_job('TEST', 'Exception');
 
 
 -- Question 3
@@ -56,21 +55,14 @@ create or replace procedure liste_emp_mgr is
     select e1.first_name as emp_fn, e1.last_name as emp_ln, e2.first_name as mgr_fn, e2.last_name as mgr_ln
     from employees e1, employees e2
     where e2.employee_id = e1.manager_id;
-  v_emp cr_emp%rowtype;
 begin
-  dbms_output.put_line('Employé     -     Manager');
-  dbms_output.put_line('-------------------------');
+  dbms_output.put_line('Employé  -  Manager');
+  dbms_output.put_line('-------------------');
   
-  open cr_emp;
-  
-  loop
-    fetch cr_emp into v_emp;
-    exit when cr_emp%notfound;
-  
+  for v_emp in cr_emp loop
     dbms_output.put_line(v_emp.emp_fn || ' ' || v_emp.emp_ln || ' - ' || v_emp.mgr_fn || ' ' || v_emp.mgr_ln);
   end loop;
   dbms_output.put_line(' ');
-  close cr_emp;
 end;
 /
 
@@ -85,21 +77,14 @@ create or replace procedure liste_emp_make_more_than (p_name varchar2) is
       select salary + decode(commission_pct, null, 0, commission_pct * salary)
       from employees
       where last_name = p_name);
-  v_emp cr_emp%rowtype;
 begin
   dbms_output.put_line('Nom');
   dbms_output.put_line('----------');
   
-  open cr_emp(p_name);
-  
-  loop
-    fetch cr_emp into v_emp;
-    exit when cr_emp%notfound;
-  
+  for v_emp in cr_emp(p_name) loop  
     dbms_output.put_line(v_emp.last_name);
   end loop;
   dbms_output.put_line(' ');
-  close cr_emp;
 end;
 /
 
@@ -119,21 +104,14 @@ create or replace procedure liste_same_job_make_more_than (p_name1 varchar2, p_n
       select salary
       from employees
       where last_name = p_name2);
-  v_emp cr_emp%rowtype;
 begin
   dbms_output.put_line('Nom');
   dbms_output.put_line('----------');
   
-  open cr_emp(p_name2);
-  
-  loop
-    fetch cr_emp into v_emp;
-    exit when cr_emp%notfound;
-  
+  for v_emp in cr_emp(p_name2) loop  
     dbms_output.put_line(v_emp.last_name);
   end loop;
   dbms_output.put_line(' ');
-  close cr_emp;
 end;
 /
 
@@ -148,21 +126,14 @@ create or replace procedure liste_emp_bigger_sal (p_n number) is
       from employees
       order by salary desc)
     where rownum <= p_n;
-  v_emp cr_emp%rowtype;
 begin
   dbms_output.put_line('Nom');
   dbms_output.put_line('----------');
   
-  open cr_emp(p_n);
-  
-  loop
-    fetch cr_emp into v_emp;
-    exit when cr_emp%notfound;
-  
+  for v_emp in cr_emp(p_n) loop  
     dbms_output.put_line(v_emp.last_name);
   end loop;
   dbms_output.put_line(' ');
-  close cr_emp;
 end;
 /
 
@@ -178,21 +149,14 @@ create or replace procedure depts_without_emp is
       select distinct decode(department_id, null, 0, department_id)
       from employees)
     order by department_name desc;
-  v_dept cr_dept%rowtype;
 begin
   dbms_output.put_line('Département');
-  dbms_output.put_line('----------');
+  dbms_output.put_line('-----------');
   
-  open cr_dept;
-  
-  loop
-    fetch cr_dept into v_dept;
-    exit when cr_dept%notfound;
-  
+  for v_dept in cr_dept loop  
     dbms_output.put_line(v_dept.dname);
   end loop;
   dbms_output.put_line(' ');
-  close cr_dept;
 end;
 /
 
@@ -200,13 +164,76 @@ exec depts_without_emp;
 
 
 -- Question 8
+create or replace procedure emp_ranking (p_n number) is
+  cursor cr_emp(p_n number) is
+    select * from (
+      select last_name
+      from employees
+      where employee_id >= p_n
+      order by employee_id asc);
+begin
+  dbms_output.put_line('Nom');
+  dbms_output.put_line('----------');
+  
+  for v_emp in cr_emp(p_n) loop  
+    dbms_output.put_line(v_emp.last_name);
+  end loop;
+  dbms_output.put_line(' ');
+end;
+/
 
+exec emp_ranking(200);
 
 -- Question 9
+drop view dept_salary;
+create view dept_salary as (
+  select departments.department_id, department_name, sum(salary) as sum_sal 
+  from departments, employees
+  where departments.department_id = employees.department_id
+  group by departments.department_id, department_name);
+  
+create or replace procedure sum_sal_dept_greater_than (p_n number) is
+  cursor cr_dept_sal(p_n number) is
+    select * from (
+      select department_id, department_name
+      from dept_salary
+      where sum_sal >= p_n
+      order by department_id asc);
+begin
+  dbms_output.put_line('Identifiant  -  Nom');
+  dbms_output.put_line('-------------------');
+  
+  for v_dept_sal in cr_dept_sal(p_n) loop  
+    dbms_output.put_line(v_dept_sal.department_id || ' - ' || v_dept_sal.department_name);
+  end loop;
+  dbms_output.put_line(' ');
+end;
+/
 
+exec sum_sal_dept_greater_than (10);
 
 -- Question 10
+create or replace procedure list_emp_bigger_sal_than_avg is
+  cursor cr_emp_avg_sal is
+    select last_name, dept_id, salary, avg_sal from employees, (
+      select nvl(department_id,0) as dept_id, round(avg(salary),2) as avg_sal
+      from employees
+      group by nvl(department_id,0))
+    where dept_id = employees.department_id
+      and salary >= avg_sal
+    order by dept_id; 
+begin
+  dbms_output.put_line('Nom');
+  dbms_output.put_line('----------');
+  
+  for v_emp in cr_emp_avg_sal loop  
+    dbms_output.put_line(v_emp.last_name);
+  end loop;
+  dbms_output.put_line(' ');
+end;
+/
 
+exec list_emp_bigger_sal_than_avg;
 
 -- Question 11 - Apparemment faut le faire avec CASE.
 create or replace function check_sal(p_empno employees.employee_id%type)

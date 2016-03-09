@@ -1,4 +1,5 @@
 // lockfileEmpty.c
+// Auteurs : Jean DEBARD et Vincent POIRIER
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -54,7 +55,7 @@ int main(int argn, char** argv)
         switch(choix)
         {
         case 0:
-            printf("Fin du programme\n");
+            printf("Fin du programme.\n");
             break;
         case 1:
             affichage(argv[1]);
@@ -223,11 +224,22 @@ void modificationEntree(char* filename)
     close(fd);
 }
 
-// variant 0: pas de lock
-// variant 1: lock bloquant
-// variant 2: lock non-bloquant
+// variante 0: pas de lock
+// variante 1: lock bloquant
+// variante 2: lock non-bloquant
 int verrouillage(int fd, int offset, int variante) {
     switch (variante) {
+		// Le verrouillage fonctionne-t-il pour des accès en lecture ? 
+		// Il existe des verrous exclusifs qui permettent le verrou
+		// à la fois en écriture et aussi en lecture.
+		//
+        // Quelle est la différence entre F_TLOCK et F_TEST ?
+        // F_TEST vérifie si la section a un verrou ou non.
+        // Elle renvoie 0 s'il n'y a pas de verrou, une autre valeur sinon.
+        // F_TLOCK teste et pose le verrou si cela est possible.
+        // On préfère utiliser F_TLOCK plutôt que F_TEST puis F_LOCK
+        // pour éviter le cas où le verrou soit appliqué par un autre
+        // processus entre les commandes F_TEST et F_LOCK.
         case 1:
             if (lockf(fd, F_TEST, offset) == 0)
                 lockf(fd, F_TLOCK, offset);
@@ -242,7 +254,8 @@ int verrouillage(int fd, int offset, int variante) {
                 lockf(fd, F_TLOCK, offset);
             else {
                printf("\nFichier utilise par un autre processus !\n");
-               printf("Retour a vos modifications.\n");
+               printf("Retour a vos modifications.\n\n");
+               return(0);
             }
             break;
     }
