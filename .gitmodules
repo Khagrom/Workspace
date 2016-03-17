@@ -1,3 +1,6 @@
 [submodule "Java-IUT"]
 	path = Java-IUT
 	url = https://github.com/Khagrom/Java-IUT
+[submodule "Java"]
+	path = Java
+	url = https://github.com/Khagrom/Java
