@@ -115,7 +115,7 @@ begin
 end;
 /
 
-exec liste_same_job_make_more_than('Kochhar', 'Fox');
+exec liste_same_job_make_more_than('King', 'King');
 
 
 -- Question 6

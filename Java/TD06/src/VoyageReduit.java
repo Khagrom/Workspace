@@ -1,5 +1,4 @@
 
-import java.util.Objects;
 import voyage.*;
 
 /**
@@ -10,7 +9,7 @@ public class VoyageReduit extends Voyage {
 
     private static final double MIN_RATE = 0.01;
     private static final double MAX_RATE = 0.99;
-    private ReelContraint tauxPromotion;
+    private final ReelContraint tauxPromotion;
 
     public VoyageReduit(String villeDep, String villeArr, int longueur, double prixKm, double txProm) throws IllegalArgumentException {
         super(villeDep, villeArr, longueur, prixKm);

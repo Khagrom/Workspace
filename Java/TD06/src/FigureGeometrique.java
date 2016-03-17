@@ -22,13 +22,13 @@ public abstract class FigureGeometrique {
         }
     }
 
-    public void homotethieFigures(FigureGeometrique[] tab, double coeff) {
+    public static void homotethieFigures(FigureGeometrique[] tab, double coeff) {
         for (FigureGeometrique f : tab) {
             f.homothetie(coeff);
         }
     }
 
-    public void rotationFigures(FigureGeometrique[] tab, double angle) {
+    public static void rotationFigures(FigureGeometrique[] tab, double angle) {
         for (FigureGeometrique f : tab) {
             f.rotation(angle);
         }
