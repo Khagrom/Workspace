@@ -117,8 +117,21 @@ CREATE OR REPLACE TRIGGER tr_NewClient BEFORE
 create or replace trigger tr_journal
 AFTER INSERT OR update or delete on DEPT
 BEGIN
-
-  insert into Journal (Current_timestamp, user, table, action)
+  if inserting then
+  insert into Journal values (Current_timestamp, USER, 'DEPT', 'INSERT');
+  end if;
+  if updating then
+    insert into Journal values (Current_timestamp, USER, 'DEPT', 'UPDATE');
+  end if;
+  if deleting then
+    insert into Journal values (Current_timestamp, USER, 'DEPT', 'DELETE');
+  end if;
 END;
 /
-  
+
+insert into dept values (80, 'bla1', 'BLU1', 6598);
+insert into dept values (90, 'bla2', 'BLU2', 6599);
+update dept
+set dname = 'bli1' where dname = 'bla1';
+delete from dept where deptno > 40;
+commit;

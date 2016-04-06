@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8"/>
@@ -6,6 +6,6 @@
   </head>
   <body>
 	Mais c'est toujours du HTML non ?
-	<?php echo' Plus maintenant !'; ?>
+	<?php echo "Plus maintenant !"; ?>
   </body>
 </html>

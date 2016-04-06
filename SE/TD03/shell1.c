@@ -1,11 +1,11 @@
 #include "ligne_commande.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+#include <unistd.h> // fork(2),getpid(2)
+#include <stdio.h> // perror(3),printf(3)
+#include <sys/types.h> // getpid(2),wait(2)
+#include <sys/wait.h> // wait(2)
 
 int main(int argc, char** argv) {
 	
