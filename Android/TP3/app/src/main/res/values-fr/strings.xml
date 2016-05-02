@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">TP3</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="avatar">Avatar</string>
+    <string name="hello_world">Bonjour !</string>
+    <string name="sex">Sexe</string>
+    <string name="sexM">Homme</string>
+    <string name="sexF">Femme</string>
+    <string name="name">Nom</string>
+    <string name="phone">Téléphone</string>
+    <string name="dob">Date de naissance</string>
+    <string name="email">Courriel</string>
+    <string name="address">Addresse</string>
+    <string name="zipCode">Code postal</string>
+    <string name="validate">Valider</string>
+    <string name="title_activity_recap">Recap</string>
+</resources>

@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Formulaire</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="avatar">Avatar</string>
+    <string name="sex">Sexe</string>
+    <string name="sexM">Mâle</string>
+    <string name="sexF">Femelle</string>
+    <string name="name">Nom / Prénom</string>
+    <string name="phone">Numéro de téléphone</string>
+    <string name="dob">Date de naissance</string>
+    <string name="email">E-mail</string>
+    <string name="address">Adresse</string>
+    <string name="zipCode">Code postal</string>
+    <string name="validate">Valider</string>
+    <string name="title_activity_recap">Récapitulatif</string>
+</resources>
